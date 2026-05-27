@@ -9,9 +9,9 @@ const listingSchema = new Schema({
     description: String,
     image: {
         type: String,
-        default: "https://unsplash.com/photos/a-flock-of-birds-flying-over-a-large-building-kTvYL-62ctQ",
+        default: "https://images.unsplash.com/photo-1638796323706-172d881ec9cb?q=80&w=1192&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         set: (v)=> v === ""
-        ? "https://unsplash.com/photos/a-flock-of-birds-flying-over-a-large-building-kTvYL-62ctQ" 
+        ? "https://images.unsplash.com/photo-1638796323706-172d881ec9cb?q=80&w=1192&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
         : v //used for setting a default image in case user provides and image but its not there
     },
     price: Number,
