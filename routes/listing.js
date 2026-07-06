@@ -4,6 +4,9 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listings.js");
 const {isLoggedIn, isOwner, validateListing} = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
+const multer = require('multer')
+const {storage} = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 //Show Listing
 //Create Listing
@@ -13,8 +16,9 @@ router
     .post(
     isLoggedIn,
     validateListing, 
+    upload.single('listing[image]'),
     wrapAsync(listingController.createListing)
-    );
+    ); 
 
 //New Route
 router.get("/new", isLoggedIn, listingController.renderNewForm);//kept before the route /:id because router logic will read "new" as an id
@@ -28,6 +32,7 @@ router
     .put( 
         isLoggedIn, 
         isOwner, 
+        upload.single('listing[image]'),
         validateListing, 
         wrapAsync(listingController.updateListing))
     .delete(
