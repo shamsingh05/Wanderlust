@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listings.js");
-const {isLoggedIn, isOwner, validateListing} = require("../middleware.js");
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 const multer = require('multer')
-const {storage} = require("../cloudConfig.js");
+const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
 //Show Listing
@@ -14,11 +14,11 @@ router
     .route("/")
     .get(wrapAsync(listingController.index))
     .post(
-    isLoggedIn,
-    upload.single("listing[image]"),
-    validateListing,
-    wrapAsync(listingController.createListing)
-    ); 
+        isLoggedIn,
+        upload.single("listing[image]"),
+        validateListing,
+        wrapAsync(listingController.createListing)
+    );
 
 //New Route
 router.get("/new", isLoggedIn, listingController.renderNewForm);//kept before the route /:id because router logic will read "new" as an id
@@ -29,14 +29,14 @@ router.get("/new", isLoggedIn, listingController.renderNewForm);//kept before th
 router
     .route("/:id")
     .get(wrapAsync(listingController.showListing))
-    .put( 
-        isLoggedIn, 
-        isOwner, 
+    .put(
+        isLoggedIn,
+        isOwner,
         upload.single('listing[image]'),
-        validateListing, 
+        validateListing,
         wrapAsync(listingController.updateListing))
     .delete(
-        isLoggedIn, 
+        isLoggedIn,
         isOwner,
         wrapAsync(listingController.destroyListing))
 

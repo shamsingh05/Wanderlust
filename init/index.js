@@ -38,7 +38,7 @@ async function initDB() {
 
         obj.geometry = response.body.features[0].geometry;
 
-        obj.owner = "6a32ba12b845daaa73f28cff";
+        obj.owner = "6a588ba1b8c9286b5bbaa040";
 
         await Listing.create(obj);
     }

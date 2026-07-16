@@ -1,10 +1,45 @@
 const Listing = require("../models/listings");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+
 const mapToken = process.env.MAP_TOKEN;
-const geocodingClient = mbxGeocoding({ accessToken: mapToken });
+// Only init Mapbox when a real token is present (starts with pk. or sk.)
+const hasValidMapToken =
+    typeof mapToken === "string" &&
+    (mapToken.startsWith("pk.") || mapToken.startsWith("sk."));//public tokens begin with pk and secret with sk
+const geocodingClient = hasValidMapToken
+    ? mbxGeocoding({ accessToken: mapToken })
+    : null;
+
+// Fallback coords when Mapbox is not configured
+const DEFAULT_GEOMETRY = {
+    type: "Point",
+    coordinates: [77.209, 28.6139], // New Delhi
+};
+
+async function geocodeLocation(locationQuery) {
+    if (!geocodingClient || !locationQuery) {
+        return DEFAULT_GEOMETRY;
+    }
+    try {
+        const response = await geocodingClient
+            .forwardGeocode({
+                query: locationQuery,
+                limit: 1,
+            })
+            .send();
+        const feature = response.body.features[0];
+        if (feature && feature.geometry) {
+            return feature.geometry;
+        }
+    } catch (err) {
+        console.warn("Mapbox geocoding failed, using default geometry:", err.message);
+    }
+    return DEFAULT_GEOMETRY;
+}
 
 module.exports.index = async (req,res)=>{
     const allListings = await Listing.find({});
+    // console.log("Listings found:", allListings.length);
     res.render("listings/index", { allListings });
 }
 
@@ -31,21 +66,13 @@ module.exports.showListing = async (req,res)=>{
 };
 
 module.exports.createListing = async (req,res)=>{
-    let response = await geocodingClient
-    .forwardGeocode({
-        query: req.body.listing.location,
-        limit: 1,
-    })
-    .send();
-    
     let url = req.file.path;
     let filename =  req.file.filename;
 
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.image = {url, filename};
-
-    newListing.geometry = response.body.features[0].geometry;
+    newListing.geometry = await geocodeLocation(req.body.listing.location);
 
     let savedListing = await newListing.save();
     console.log(savedListing);

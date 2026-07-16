@@ -42,11 +42,13 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
 
+// express-session cookie signing secret (from .env)
+const sessionSecret =
+    process.env.SECRET || "Wanderlust@Dev#2026!";
+
 const store = MongoStore.create({
     mongoUrl: dbUrl,
-    crypto: {
-        secret: "myveryverysupersecretkey",
-    },
+    // crypto disabled — connect-mongo + kruptein encryption is flaky with current versions
     touchAfter: 24 * 3600,
 });
  
@@ -55,19 +57,15 @@ store.on("error", (err) => {
 });
 const sessionOptions = {
     store,
-    secret : "mysupersecretkey",
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        http: true
+        httpOnly: true,
     }
 };
-
-// app.get("/",(req,res)=>{
-//     res.send("I am root");
-// }) 
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -86,14 +84,9 @@ app.use((req, res, next)=>{
     next();
 })
 
-// app.get("/demouser", async(req, res) =>{
-//     let fakeUser = ({
-//         email: "student@gmail.com",
-//         username: "delta-student"
-//     })
-//     registeredUser = await User.register(fakeUser, "helloworld");
-//     res.send(registeredUser);
-// })
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
@@ -103,13 +96,14 @@ app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
 });
 
-// app.use((err, req, res, next)=>{
+app.use((err, req, res, next)=>{
 
-//     let {statusCode = 500, message = "Something went wrong!"} = err;
-//     res.status(statusCode).render("error.ejs", {err});
-//     // res.status(statusCode).send(message);
-// })
+    let {statusCode = 500, message = "Something went wrong!"} = err;
+    res.status(statusCode).render("error.ejs", {err});
+    // res.status(statusCode).send(message);
+})
 
+/* FOR PRINTING ERROR TO CONSOLE
 app.use((err, req, res, next) => {
     console.error("===== ORIGINAL ERROR =====");
     console.error(err);
@@ -121,6 +115,7 @@ app.use((err, req, res, next) => {
     let { statusCode = 500 } = err;
     res.status(statusCode).render("error.ejs", { err });
 });
+*/
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
