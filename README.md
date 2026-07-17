@@ -250,15 +250,29 @@ http://localhost:8080
 > Add screenshots here for:
 
 - Home Page
-- Property Details
-- Login
-- Signup
-- Create Listing
-- Edit Listing
-- Reviews
-- Mobile View
+  <img width="1897" height="970" alt="image" src="https://github.com/user-attachments/assets/45c2c5bb-13cf-402a-a99f-ba6782d4d628" />
 
----
+- Property Details
+  <img width="1897" height="968" alt="image" src="https://github.com/user-attachments/assets/e3f5cfc5-a2ff-4231-b950-e1aca11be3bd" />
+
+- Login
+  <img width="1917" height="972" alt="image" src="https://github.com/user-attachments/assets/73baff7f-4224-4e20-af64-3b45bc3f5f3e" />
+
+- Signup
+  <img width="1917" height="971" alt="image" src="https://github.com/user-attachments/assets/4cc2b615-1643-46db-a67d-0e4a9c6375f1" />
+
+- Create Listing
+  <img width="1227" height="740" alt="image" src="https://github.com/user-attachments/assets/b8fb28c1-508b-42b8-9796-4556569c7835" />
+
+- Edit Listing
+  <img width="1301" height="867" alt="image" src="https://github.com/user-attachments/assets/f897f100-dfab-437d-bf6d-8dbb3e232ee5" />
+
+- Reviews
+  <img width="542" height="255" alt="image" src="https://github.com/user-attachments/assets/5a85ee9c-a363-4458-abbd-864f5d9e5793" />
+
+- Map
+  <img width="862" height="612" alt="image" src="https://github.com/user-attachments/assets/38366b43-4442-45ad-ac8c-9505329b72c3" />
+
 
 # 🌟 Highlights
 
