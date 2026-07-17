@@ -1,5 +1,5 @@
 # Wanderlust
-# 🌍 WanderLust – Airbnb-Inspired Vacation Rental Platform
+# 🌍 WanderLust – Vacation Rental Platform
 
 WanderLust is a full-stack vacation rental web application inspired by Airbnb. It enables users to discover unique stays, securely authenticate, create and manage property listings, upload images, leave reviews, and explore property locations through an interactive map.
 
