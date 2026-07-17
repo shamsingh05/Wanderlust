@@ -247,8 +247,6 @@ http://localhost:8080
 
 # 📷 Screenshots
 
-> Add screenshots here for:
-
 - Home Page
   <img width="1897" height="970" alt="image" src="https://github.com/user-attachments/assets/45c2c5bb-13cf-402a-a99f-ba6782d4d628" />
 
